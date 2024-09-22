@@ -934,15 +934,12 @@ export function getRunningSessions() {
     const sessions = await fetchAllSessions(baseUrl, authToken);
     dispatch({type: GET_SESSIONS_DONE, sessions});
 
-    // set attachSessId if only one session found
-    if (sessions.length === 1) {
+    // set attachSessId as the first session found
+    if (sessions.length > 0) {
+      const firstSessionId = sessions[0].id
       dispatch({type: SET_ATTACH_SESS_ID, attachSessId: sessions[0].id});
-    } else if (attachSessId) {
-      // clear attachSessId if it is no longer present in the found session list
-      const attachSessIdFound = sessions.find((session) => session.id === attachSessId);
-      if (!attachSessIdFound) {
-        dispatch({type: SET_ATTACH_SESS_ID, attachSessId: null});
-      }
+      console.log("All found sessions: ", sessions);
+      return firstSessionId
     }
   };
 }

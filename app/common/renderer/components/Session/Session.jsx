@@ -40,6 +40,7 @@ const Session = (props) => {
     savedSessions,
     newSessionLoading,
     attachSessId,
+    getRunningSessions,
     t,
   } = props;
 
@@ -57,7 +58,23 @@ const Session = (props) => {
   };
 
   const loadNewSession = async (caps, attachSessId = null) => {
-    if (await newSession(_.cloneDeep(caps), attachSessId)) {
+    const defaultCaps = [
+      {
+          "type": "text",
+          "name": "platformName",
+          "value": "Android"
+      },
+      {
+          "type": "text",
+          "name": "appium:automationName",
+          "value": "UiAutomator2"
+      }
+    ];
+
+    const firstSessionId = await getRunningSessions();
+    console.log("firstSessionId: ", firstSessionId);
+    if (firstSessionId) attachSessId = firstSessionId
+    if (await newSession(_.cloneDeep(defaultCaps), attachSessId)) {
       navigate('/inspector', {replace: true});
     }
   };
