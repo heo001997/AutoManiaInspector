@@ -43,6 +43,19 @@
   flex-basis: 400px;
 }
 
+.screenshot-container {
+  width: 100%;
+  /* overflow: auto; */
+  max-height: 50vh; /* Adjust this value as needed */
+}
+
+.screenshotImage {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 .screenshot-container .screenshot-controls {
   display: flex;
   flex-direction: row;

@@ -78,6 +78,8 @@
   "experitestAccessKey": "Experitest AccessKey",
   "experitestUrl": "Experitest Url",
   "locatorStrategy": "Locator Strategy:",
+  "Current Screenshot": "Current Screenshot:",
+  "Selected Image": "Selected Image:",
   "selector": "Selector:",
   "couldNotObtainScreenshot": "Could not obtain screenshot: {{screenshotError}}",
   "selectElementInSource": "Select an element in the source to begin.",
@@ -295,5 +297,8 @@
   "gestureNameCannotBeEmptyError": "Gesture name cannot be empty",
   "gestureInvalidJsonError": "Invalid JSON file. Unable to parse the file content",
   "gestureImportedFrom": "Gesture imported from '{{fileName}}'",
-  "invalidSessionFile": "Invalid session file"
+  "invalidSessionFile": "Invalid session file",
+  "Find in Screenshot": "Find in Screenshot",
+  "Image found in screenshot": "Image found in screenshot",
+  "Image not found in screenshot": "Image not found in screenshot"
 }
