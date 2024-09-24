@@ -240,14 +240,14 @@ const SelectedElement = (props) => {
           </Tooltip>
         </Button.Group>
         <Button.Group>
-          <Tooltip title={t('Copy Attributes to Clipboard')}>
+          {/* <Tooltip title={t('Copy Attributes to Clipboard')}>
             <Button
               disabled={isDisabled}
               id="btnCopyAttributes"
               icon={<CopyOutlined />}
               onClick={() => copyToClipboard(JSON.stringify(dataSource))}
             />
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip title={t('Download Screenshot')}>
             <Button
               disabled={isDisabled}
@@ -256,14 +256,14 @@ const SelectedElement = (props) => {
               onClick={() => downloadElementScreenshot(selectedElementId)}
             />
           </Tooltip>
-          <Tooltip title={t('Get Timing')}>
+          {/* <Tooltip title={t('Get Timing')}>
             <Button
               disabled={isDisabled}
               id="btnGetTiming"
               icon={<HourglassOutlined />}
               onClick={() => getFindElementsTimes(findDataSource)}
             />
-          </Tooltip>
+          </Tooltip> */}
         </Button.Group>
       </Row>
       {findDataSource.length > 0 && (

@@ -83,6 +83,7 @@ const Inspector = (props) => {
   const mjpegStreamCheckInterval = useRef(null);
 
   const [scaleRatio, setScaleRatio] = useState(1);
+  const [isActionColVisible, setIsActionColVisible] = useState(false); // Add this state
 
   const navigate = useNavigate();
 
@@ -154,6 +155,10 @@ const Inspector = (props) => {
   const quitCurrentSession = async (reason, killedByUser = true) => {
     await quitSession(reason, killedByUser);
     navigate('/session', {replace: true});
+  };
+
+  const toggleActionColVisibility = () => {
+    setIsActionColVisible(!isActionColVisible);
   };
 
   useEffect(() => {
@@ -270,6 +275,7 @@ const Inspector = (props) => {
         ref={screenshotContainerEl}
       >
         {screenShotControls}
+        <HeaderButtons quitCurrentSession={quitCurrentSession} {...props} />
         {showScreenshot && <Screenshot {...props} scaleRatio={scaleRatio} />}
         {screenshotError && t('couldNotObtainScreenshot', {screenshotError})}
         {!showScreenshot && (
@@ -280,6 +286,7 @@ const Inspector = (props) => {
       </div>
       <div id="sourceTreeContainer" className={InspectorStyles['interaction-tab-container']}>
         <Tabs
+          style={{ paddingLeft: '12px' }}
           activeKey={selectedInspectorTab}
           size="small"
           onChange={(tab) => selectInspectorTab(tab)}
@@ -290,48 +297,13 @@ const Inspector = (props) => {
               disabled: !showScreenshot,
               children: (
                 <div className="action-row">
-                  <div className="action-col">
-                    <Card
-                      title={
-                        <span>
-                          <FileTextOutlined /> {t('App Source')}{' '}
-                        </span>
-                      }
-                      extra={
-                        <span>
-                          <Tooltip title={t('Toggle Attributes')}>
-                            <Button
-                              type="text"
-                              id="btnToggleAttrs"
-                              icon={<CodeOutlined />}
-                              onClick={toggleShowAttributes}
-                            />
-                          </Tooltip>
-                          <Tooltip title={t('Copy XML Source to Clipboard')}>
-                            <Button
-                              type="text"
-                              id="btnSourceXML"
-                              icon={<CopyOutlined />}
-                              onClick={() => copyToClipboard(sourceXML)}
-                            />
-                          </Tooltip>
-                          <Tooltip title={t('Download Source as .XML File')}>
-                            <Button
-                              type="text"
-                              id="btnDownloadSourceXML"
-                              icon={<DownloadOutlined />}
-                              onClick={() => downloadXML(sourceXML)}
-                            />
-                          </Tooltip>
-                        </span>
-                      }
-                    >
-                      <Source {...props} />
-                    </Card>
-                  </div>
                   <div
                     id="selectedElementContainer"
                     className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']} action-col`}
+                    style={{
+                      minWidth: isActionColVisible ? '50%' : '100%',
+                      maxWidth: isActionColVisible ? '50%' : '100%',
+                    }}
                   >
                     <Card
                       title={
@@ -340,11 +312,60 @@ const Inspector = (props) => {
                         </span>
                       }
                       className={InspectorStyles['selected-element-card']}
+                      extra={
+                        <Button onClick={toggleActionColVisibility}>
+                          {isActionColVisible ? t('Hide Details') : t('Show Details')}
+                        </Button>
+                      }
                     >
                       {selectedElement.path && <SelectedElement {...props} />}
                       {!selectedElement.path && <i>{t('selectElementInSource')}</i>}
                     </Card>
                   </div>
+                  {(
+                    <div
+                      className="action-col"
+                      style={{ paddingLeft: '12px', display: isActionColVisible ? 'block' : 'none' }}
+                    >
+                      <Card
+                        title={
+                          <span>
+                            <FileTextOutlined /> {t('App Source')}{' '}
+                          </span>
+                        }
+                        extra={
+                          <span>
+                            <Tooltip title={t('Toggle Attributes')}>
+                              <Button
+                                type="text"
+                                id="btnToggleAttrs"
+                                icon={<CodeOutlined />}
+                                onClick={toggleShowAttributes}
+                              />
+                            </Tooltip>
+                            <Tooltip title={t('Copy XML Source to Clipboard')}>
+                              <Button
+                                type="text"
+                                id="btnSourceXML"
+                                icon={<CopyOutlined />}
+                                onClick={() => copyToClipboard(sourceXML)}
+                              />
+                            </Tooltip>
+                            <Tooltip title={t('Download Source as .XML File')}>
+                              <Button
+                                type="text"
+                                id="btnDownloadSourceXML"
+                                icon={<DownloadOutlined />}
+                                onClick={() => downloadXML(sourceXML)}
+                              />
+                            </Tooltip>
+                          </span>
+                        }
+                      >
+                        <Source {...props} />
+                      </Card>
+                    </div>
+                  )}
                 </div>
               ),
             },
@@ -365,57 +386,6 @@ const Inspector = (props) => {
                 </Card>
               ),
             },
-            {
-              label: t('Gestures'),
-              key: INSPECTOR_TABS.GESTURES,
-              disabled: !showScreenshot,
-              children: isGestureEditorVisible ? (
-                <Card
-                  title={
-                    <span>
-                      <HighlightOutlined /> {t('Gesture Builder')}
-                    </span>
-                  }
-                  className={InspectorStyles['interaction-tab-card']}
-                >
-                  <GestureEditor {...props} />
-                </Card>
-              ) : (
-                <Card
-                  title={
-                    <span>
-                      <HighlightOutlined /> {t('Saved Gestures')}
-                    </span>
-                  }
-                  className={InspectorStyles['interaction-tab-card']}
-                >
-                  <SavedGestures {...props} />
-                </Card>
-              ),
-            },
-            {
-              label: t('Recorder'),
-              key: INSPECTOR_TABS.RECORDER,
-              disabled: !showScreenshot,
-              children: <Recorder {...props} />,
-            },
-            {
-              label: t('Session Information'),
-              key: INSPECTOR_TABS.SESSION_INFO,
-              disabled: !showScreenshot,
-              children: (
-                <Card
-                  title={
-                    <span>
-                      <InfoCircleOutlined /> {t('Session Information')}
-                    </span>
-                  }
-                  className={InspectorStyles['interaction-tab-card']}
-                >
-                  <SessionInfo {...props} />
-                </Card>
-              ),
-            },
           ]}
         />
       </div>
@@ -424,7 +394,6 @@ const Inspector = (props) => {
 
   return (
     <div className={InspectorStyles['inspector-container']}>
-      <HeaderButtons quitCurrentSession={quitCurrentSession} {...props} />
       {main}
       <Modal
         title={t('Session Inactive')}

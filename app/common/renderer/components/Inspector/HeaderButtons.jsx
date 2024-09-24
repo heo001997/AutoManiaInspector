@@ -192,7 +192,7 @@ const HeaderButtons = (props) => {
       <Tooltip title={t('Search for element')}>
         <Button id="searchForElement" icon={<SearchOutlined />} onClick={showLocatorTestModal} />
       </Tooltip>
-      {!isRecording && (
+      {/* {!isRecording && (
         <Tooltip title={t('Start Recording')}>
           <Button id="btnStartRecording" icon={<VideoCameraOutlined />} onClick={startRecording} />
         </Tooltip>
@@ -206,7 +206,7 @@ const HeaderButtons = (props) => {
             onClick={pauseRecording}
           />
         </Tooltip>
-      )}
+      )} */}
     </Button.Group>
   );
 
@@ -220,7 +220,7 @@ const HeaderButtons = (props) => {
     <div className={InspectorStyles['inspector-toolbar']}>
       <Space size="middle">
         {deviceControls}
-        {appModeControls}
+        {/* {appModeControls} */}
         {generalControls}
         {quitSessionButton}
       </Space>
