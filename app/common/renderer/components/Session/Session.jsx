@@ -113,7 +113,22 @@ const Session = (props) => {
 
   return [
     <Spin spinning={!!newSessionLoading} key="main">
-      <div className={SessionStyles.sessionContainer}>
+      <div className={SessionStyles.logoButtonContainer}>
+        <img
+          src="/renderer/assets/images/auto-mania.webp"
+          alt="Auto Mania Logo"
+          className={SessionStyles.logoImage}
+        />
+        <Button
+          type={BUTTON.PRIMARY}
+          id="btnStartSession"
+          onClick={() => loadNewSession(caps)}
+          className={SessionStyles['start-session-button']}
+        >
+          {t('startSession')}
+        </Button>
+      </div>
+      {/* <div className={SessionStyles.sessionContainer}>
         <div id="serverTypeTabs" className={SessionStyles.serverTab}>
           <Tabs
             activeKey={serverType}
@@ -220,9 +235,9 @@ const Session = (props) => {
             </Button>
           )}
         </div>
-      </div>
+      </div> */}
     </Spin>,
-    <CloudProviderSelector {...props} key="CloudProviderSelector" />,
+    // <CloudProviderSelector {...props} key="CloudProviderSelector" />,
   ];
 };
 
